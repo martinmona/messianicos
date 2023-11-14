@@ -1,10 +1,65 @@
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["referentialIntegrity"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-    provider             = "mysql"
-    url                  = env("DATABASE_URL")
-    referentialIntegrity = "prisma"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Competiciones {
+  Id     Int     @id @unique(map: "Id_UNIQUE") @default(autoincrement()) @db.SmallInt
+  Nombre String  @unique(map: "Nombre_UNIQUE") @db.VarChar(45)
+  Goles  Goles[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Equipos {
+  Id          Int     @id @unique(map: "Id_UNIQUE") @default(autoincrement()) @db.SmallInt
+  Nombre      String  @unique(map: "Nombre_UNIQUE") @db.VarChar(100)
+  JugoMessi   Boolean @db.Bit(1)
+  EsSeleccion Boolean @db.Bit(1)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Estadios {
+  Id     Int     @id @unique(map: "Id_UNIQUE") @default(autoincrement()) @db.SmallInt
+  Nombre String  @unique(map: "Nombre_UNIQUE") @db.VarChar(45)
+  Goles  Goles[]
+}
+
+model Goles {
+  Id            Int           @id @default(autoincrement())
+  EquipoId      Int           @db.SmallInt
+  RivalId       Int           @db.SmallInt
+  EstadioId     Int           @db.SmallInt
+  JugadaId      Int           @db.TinyInt
+  TecnicaId     Int           @db.TinyInt
+  CompeticionId Int           @db.SmallInt
+  Competiciones Competiciones @relation(fields: [CompeticionId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_CompeticionId")
+  Estadios      Estadios      @relation(fields: [EstadioId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_EstadioId")
+  Jugadas       Jugadas       @relation(fields: [JugadaId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_JugadaId")
+  Tecnicas      Tecnicas      @relation(fields: [TecnicaId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TecnicaId")
+
+  @@index([CompeticionId], map: "FK_CompeticionId")
+  @@index([EstadioId], map: "FK_EstadioId")
+  @@index([JugadaId], map: "FK_JugadaId")
+  @@index([EquipoId], map: "FK_RivalId")
+  @@index([TecnicaId], map: "FK_TecnicaId")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Jugadas {
+  Id     Int     @id @unique(map: "Id_UNIQUE") @default(autoincrement()) @db.TinyInt
+  Nombre String  @unique(map: "Nombre_UNIQUE") @db.VarChar(45)
+  Goles  Goles[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Tecnicas {
+  Id     Int     @id @unique(map: "Id_UNIQUE") @default(autoincrement()) @db.TinyInt
+  Nombre String  @unique(map: "Nombre_UNIQUE") @db.VarChar(45)
+  Goles  Goles[]
 }
