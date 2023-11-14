@@ -45,6 +45,30 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Competiciones_SelectById` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`Lionel`@`%` PROCEDURE `Competiciones_SelectById`(
+IN p_CompeticionId SMALLINT
+)
+BEGIN
+
+SELECT * FROM Competiciones 
+WHERE Id = p_CompeticionId;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `Equipos_SelectAll` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -64,6 +88,29 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Equipos_SelectById` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`Lionel`@`%` PROCEDURE `Equipos_SelectById`(
+IN p_EquipoId SMALLINT)
+BEGIN
+
+SELECT * FROM Equipos 
+WHERE Id = p_EquipoId;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `Estadios_SelectAll` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -77,6 +124,29 @@ DELIMITER ;;
 CREATE DEFINER=`Lionel`@`%` PROCEDURE `Estadios_SelectAll`()
 BEGIN
     SELECT * FROM dbmessianicos.Estadios;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Estadios_SelectById` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`Lionel`@`%` PROCEDURE `Estadios_SelectById`(
+IN p_EstadioId SMALLINT)
+BEGIN
+
+SELECT * FROM Estadios
+WHERE Id = p_EstadioId;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -173,26 +243,56 @@ DELIMITER ;;
 CREATE DEFINER=`Lionel`@`%` PROCEDURE `Goles_SelectAll`()
 BEGIN
     SELECT 
-	  go.Id
-	  ,eq.Nombre as Equipo
-	  ,ri.Nombre as Rival
-	  ,c.Nombre as Competicion
-	  ,es.Nombre as Estadio
-	  ,t.Nombre as Tecnica
-	  ,j.Nombre as Jugada
-FROM dbmessianicos.Goles as go
-INNER JOIN Equipos as eq
-ON EquipoId = eq.Id
-INNER JOIN Equipos as ri
-ON RivalId = ri.Id
-INNER JOIN Competiciones as c
-ON CompeticionId = c.Id
-INNER JOIN Estadios as es
-ON CompeticionId = es.Id
-INNER JOIN Tecnicas as t
-ON TecnicaId = t.Id
-INNER JOIN Jugadas as j
-ON TecnicaId = j.Id;
+        go.Id,
+        eq.Nombre as Equipo,
+        ri.Nombre as Rival,
+        c.Nombre as Competicion,
+        es.Nombre as Estadio,
+        t.Nombre as Tecnica,
+        j.Nombre as Jugada
+    FROM Goles as go
+    INNER JOIN Equipos as eq ON go.EquipoId = eq.Id
+    INNER JOIN Equipos as ri ON go.RivalId = ri.Id
+    INNER JOIN Competiciones as c ON go.CompeticionId = c.Id
+    INNER JOIN Estadios as es ON go.EstadioId = es.Id
+    INNER JOIN Tecnicas as t ON go.TecnicaId = t.Id
+    INNER JOIN Jugadas as j ON go.JugadaId = j.Id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Goles_SelectById` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`Lionel`@`%` PROCEDURE `Goles_SelectById`(
+IN p_GolId INT)
+BEGIN
+
+SELECT 
+        go.Id,
+        eq.Nombre as Equipo,
+        ri.Nombre as Rival,
+        c.Nombre as Competicion,
+        es.Nombre as Estadio,
+        t.Nombre as Tecnica,
+        j.Nombre as Jugada
+    FROM Goles as go 
+    INNER JOIN Equipos as eq ON go.EquipoId = eq.Id
+    INNER JOIN Equipos as ri ON go.RivalId = ri.Id
+    INNER JOIN Competiciones as c ON go.CompeticionId = c.Id
+    INNER JOIN Estadios as es ON go.EstadioId = es.Id
+    INNER JOIN Tecnicas as t ON go.TecnicaId = t.Id
+    INNER JOIN Jugadas as j ON go.JugadaId = j.Id
+	WHERE go.Id = p_GolId;
 
 END ;;
 DELIMITER ;
@@ -219,6 +319,29 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Jugadas_SelectById` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`Lionel`@`%` PROCEDURE `Jugadas_SelectById`(
+IN p_JugadaId TINYINT)
+BEGIN
+
+SELECT * FROM Jugadas
+WHERE Id = p_JugadaId;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `Tecnicas_SelectAll` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -238,6 +361,29 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Tecnicas_SelectById` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`Lionel`@`%` PROCEDURE `Tecnicas_SelectById`(
+IN p_TecnicaId TINYINT)
+BEGIN
+
+SELECT * FROM Tecnicas
+WHERE Id = p_TecnicaId;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -249,4 +395,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-13 14:00:49
+-- Dump completed on 2023-11-14 13:53:15
