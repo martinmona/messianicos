@@ -165,9 +165,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`Lionel`@`%` PROCEDURE `Goles_Insert`(
     IN p_EquipoNombre VARCHAR(50),
-    IN p_EquipoEsSeleccion bit(1),
     IN p_RivalNombre VARCHAR(50),
-	IN p_RivalEsSeleccion bit(1),
     IN p_CompeticionNombre VARCHAR(50),
     IN p_EstadioNombre VARCHAR(50),
     IN p_TecnicaNombre VARCHAR(50),
@@ -184,13 +182,13 @@ BEGIN
 
     SELECT ID INTO v_EquipoID FROM Equipos WHERE Nombre = p_EquipoNombre;
     IF v_EquipoID IS NULL THEN
-        INSERT INTO Equipos (Nombre, JugoMessi, EsSeleccion) VALUES (p_EquipoNombre, 1 , p_EquipoEsSeleccion);
+        INSERT INTO Equipos (Nombre) VALUES (p_EquipoNombre);
        SET v_EquipoID = LAST_INSERT_ID();
     END IF;
 
     SELECT ID INTO v_RivalID FROM Equipos WHERE Nombre = p_RivalNombre;
     IF v_RivalID IS NULL THEN
-        INSERT INTO Equipos (Nombre, JugoMessi, EsSeleccion) VALUES (p_RivalNombre,0 , p_RivalEsSeleccion);
+        INSERT INTO Equipos (Nombre) VALUES (p_RivalNombre);
         SET v_RivalID = LAST_INSERT_ID();
     END IF;
 
@@ -243,20 +241,20 @@ DELIMITER ;;
 CREATE DEFINER=`Lionel`@`%` PROCEDURE `Goles_SelectAll`()
 BEGIN
     SELECT 
-        go.Id,
-        eq.Nombre as Equipo,
-        ri.Nombre as Rival,
-        c.Nombre as Competicion,
-        es.Nombre as Estadio,
-        t.Nombre as Tecnica,
-        j.Nombre as Jugada
-    FROM Goles as go
-    INNER JOIN Equipos as eq ON go.EquipoId = eq.Id
-    INNER JOIN Equipos as ri ON go.RivalId = ri.Id
-    INNER JOIN Competiciones as c ON go.CompeticionId = c.Id
-    INNER JOIN Estadios as es ON go.EstadioId = es.Id
-    INNER JOIN Tecnicas as t ON go.TecnicaId = t.Id
-    INNER JOIN Jugadas as j ON go.JugadaId = j.Id;
+        Goles.Id,
+        Equipos.Nombre as Equipo,
+        Rivales.Nombre as Rival,
+        Competiciones.Nombre as Competicion,
+        Estadios.Nombre as Estadio,
+        Tecnicas.Nombre as Tecnica,
+        Jugadas.Nombre as Jugada
+    FROM Goles
+    INNER JOIN Equipos as Equipos ON Goles.EquipoId = Equipos.Id
+    INNER JOIN Equipos as Rivales ON Goles.RivalId = Rivales.Id
+    INNER JOIN Competiciones ON Goles.CompeticionId = Competiciones.Id
+    INNER JOIN Estadios ON Goles.EstadioId = Estadios.Id
+    INNER JOIN Tecnicas ON Goles.TecnicaId = Tecnicas.Id
+    INNER JOIN Jugadas ON Goles.JugadaId = Jugadas.Id;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -395,4 +393,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-14 13:53:15
+-- Dump completed on 2023-11-17 13:20:04

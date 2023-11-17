@@ -31,10 +31,8 @@ DROP TABLE IF EXISTS `Equipos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Equipos` (
-  `Id` smallint NOT NULL AUTO_INCREMENT,
+  `Id` smallint NOT NULL,
   `Nombre` varchar(100) NOT NULL,
-  `JugoMessi` bit(1) NOT NULL,
-  `EsSeleccion` bit(1) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Id_UNIQUE` (`Id`),
   UNIQUE KEY `Nombre_UNIQUE` (`Nombre`)
@@ -47,6 +45,7 @@ CREATE TABLE `Equipos` (
 
 LOCK TABLES `Equipos` WRITE;
 /*!40000 ALTER TABLE `Equipos` DISABLE KEYS */;
+INSERT INTO `Equipos` VALUES (1,'Barcelona'),(2,'Brasil'),(4,'Chile'),(3,'PSG'),(0,'sd');
 /*!40000 ALTER TABLE `Equipos` ENABLE KEYS */;
 UNLOCK TABLES;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
@@ -60,4 +59,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-13 14:00:43
+-- Dump completed on 2023-11-17 13:06:36
