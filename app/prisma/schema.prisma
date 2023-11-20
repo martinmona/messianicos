@@ -17,10 +17,8 @@ model Competiciones {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model Equipos {
-  Id          Int     @id @unique(map: "Id_UNIQUE") @default(autoincrement()) @db.SmallInt
-  Nombre      String  @unique(map: "Nombre_UNIQUE") @db.VarChar(100)
-  JugoMessi   Boolean @db.Bit(1)
-  EsSeleccion Boolean @db.Bit(1)
+  Id     Int    @id @unique(map: "Id_UNIQUE") @default(autoincrement()) @db.SmallInt
+  Nombre String @unique(map: "Nombre_UNIQUE") @db.VarChar(100)
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
