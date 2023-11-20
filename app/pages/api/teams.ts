@@ -12,6 +12,6 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const result = await prisma.Equipos.findMany()
+  const result = await prisma.equipos.findMany()
   return res.json(result)
 }
